@@ -21,6 +21,20 @@ terraform {
   }
 }
 
+# data "external" "subscription" {
+#   program = ["bash", "-c", "az account list --query '[0].id' -o tsv"]
+# }
+
+# provider "azurerm" {
+#   features {}
+#   subscription_id = "b355b6fd-f1c9-4eb5-a9da-74440fd27748"
+# }
+
+
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
 }

@@ -43,3 +43,19 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     load_balancer_sku = "standard"
   }
 }
+
+resource "null_resource" "update_kubeconfig" {
+  provisioner "local-exec" {
+    command = "az aks get-credentials --resource-group ${azurerm_resource_group.rg.name} --name ${azurerm_kubernetes_cluster.k8s.name} --overwrite-existing"
+  }
+
+  depends_on = [azurerm_kubernetes_cluster.k8s]
+}
+
+resource "null_resource" "enable_http_application_routing" {
+  provisioner "local-exec" {
+    command = "az aks enable-addons --resource-group ${azurerm_resource_group.rg.name} --name ${azurerm_kubernetes_cluster.k8s.name} --addons http_application_routing"
+  }
+
+  depends_on = [null_resource.update_kubeconfig]
+}

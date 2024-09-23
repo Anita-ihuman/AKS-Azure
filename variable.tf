@@ -1,6 +1,6 @@
 variable "resource_group_location" {
   type        = string
-  default     = "South Africa North"
+  default     = "southafricanorth"
   description = "Location of the resource group."
 }
 
